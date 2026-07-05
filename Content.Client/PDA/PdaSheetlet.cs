@@ -78,18 +78,15 @@ public sealed class PdaSheetlet : Sheetlet<NanotrasenStylesheet>
                 .Prop(PdaProgramItem.StylePropertyBgColor, Color.FromHex(PdaProgramItem.HoverColor)),
 
             //PDA - Copy buttons
-            E<ContainerButton>()
-                .Class("PdaCopyButton")
+            E<PdaCopyButton>()
                 .Pseudo(ContainerButton.StylePseudoClassNormal)
                 .Prop(ContainerButton.StylePropertyStyleBox, new StyleBoxFlat(Color.Transparent)),
 
-            E<ContainerButton>()
-                .Class("PdaCopyButton")
+            E<PdaCopyButton>()
                 .Pseudo(ContainerButton.StylePseudoClassHover)
                 .Prop(ContainerButton.StylePropertyStyleBox, new StyleBoxFlat(Color.FromHex("#3a3a42"))),
 
-            E<ContainerButton>()
-                .Class("PdaCopyButton")
+            E<PdaCopyButton>()
                 .Pseudo(ContainerButton.StylePseudoClassPressed)
                 .Prop(ContainerButton.StylePropertyStyleBox, new StyleBoxFlat(Color.FromHex("#4a4a55"))),
 

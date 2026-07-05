@@ -1,3 +1,4 @@
+using System.Threading;
 using Content.Client.GameTicking.Managers;
 using Content.Shared.PDA;
 using Robust.Shared.Utility;
@@ -35,6 +36,7 @@ namespace Content.Client.PDA
 
 
         private int _currentView;
+        private CancellationTokenSource? _copiedFeedbackCancel;
 
         public event Action<EntityUid>? OnProgramItemPressed;
         public event Action<EntityUid>? OnUninstallButtonPressed;
@@ -145,13 +147,13 @@ namespace Content.Client.PDA
             if (state.PdaOwnerInfo.ActualOwnerName != null)
             {
                 _pdaOwner = state.PdaOwnerInfo.ActualOwnerName;
-                PdaOwnerLabel.SetMarkup(Loc.GetString("comp-pda-ui-owner",
+                PdaOwnerButton.SetMarkup(Loc.GetString("comp-pda-ui-owner",
                     ("actualOwnerName", _pdaOwner)));
-                PdaOwnerLabel.Visible = true;
+                PdaOwnerButton.TextVisible = true;
             }
             else
             {
-                PdaOwnerLabel.Visible = false;
+                PdaOwnerButton.TextVisible = false;
             }
 
 
@@ -159,23 +161,23 @@ namespace Content.Client.PDA
             {
                 _owner = state.PdaOwnerInfo.IdOwner ?? Loc.GetString("comp-pda-ui-unknown");
                 _jobTitle = state.PdaOwnerInfo.JobTitle ?? Loc.GetString("comp-pda-ui-unassigned");
-                IdInfoLabel.SetMarkup(Loc.GetString("comp-pda-ui",
+                IdInfoButton.SetMarkup(Loc.GetString("comp-pda-ui",
                     ("owner", _owner),
                     ("jobTitle", _jobTitle)));
             }
             else
             {
-                IdInfoLabel.SetMarkup(Loc.GetString("comp-pda-ui-blank"));
+                IdInfoButton.SetMarkup(Loc.GetString("comp-pda-ui-blank"));
             }
 
             _stationName = state.StationName ?? Loc.GetString("comp-pda-ui-unknown");
-            StationNameLabel.SetMarkup(Loc.GetString("comp-pda-ui-station",
+            StationNameButton.SetMarkup(Loc.GetString("comp-pda-ui-station",
                 ("station", _stationName)));
 
 
             var stationTime = _gameTiming.CurTime.Subtract(_gameTicker.RoundStartTimeSpan);
 
-            StationTimeLabel.SetMarkup(Loc.GetString("comp-pda-ui-station-time",
+            StationTimeButton.SetMarkup(Loc.GetString("comp-pda-ui-station-time",
                 ("time", stationTime.ToString("hh\\:mm\\:ss"))));
 
             var alertLevel = state.PdaOwnerInfo.StationAlertLevel;
@@ -183,13 +185,13 @@ namespace Content.Client.PDA
             var alertLevelKey = alertLevel != null ? $"alert-level-{alertLevel}" : "alert-level-unknown";
             _alertLevel = Loc.GetString(alertLevelKey);
 
-            StationAlertLevelLabel.SetMarkup(Loc.GetString(
+            StationAlertLevelButton.SetMarkup(Loc.GetString(
                 "comp-pda-ui-station-alert-level",
                 ("color", alertColor),
                 ("level", _alertLevel)
             ));
             _instructions = Loc.GetString($"{alertLevelKey}-instructions");
-            StationAlertLevelInstructions.SetMarkup(Loc.GetString(
+            StationAlertLevelInstructionsButton.SetMarkup(Loc.GetString(
                 "comp-pda-ui-station-alert-level-instructions",
                 ("instructions", _instructions))
             );
@@ -336,12 +338,17 @@ namespace Content.Client.PDA
 
         private void ShowCopiedFeedback()
         {
+            _copiedFeedbackCancel?.Cancel();
+            _copiedFeedbackCancel = new CancellationTokenSource();
+
             CopiedLabel.Visible = true;
             Timer.Spawn(1500, () =>
             {
                 if (!Disposed)
                     CopiedLabel.Visible = false;
-            });
+
+                _copiedFeedbackCancel = null;
+            }, _copiedFeedbackCancel.Token);
         }
 
         private void HideAllViews()
@@ -359,7 +366,7 @@ namespace Content.Client.PDA
 
             var stationTime = _gameTiming.CurTime.Subtract(_gameTicker.RoundStartTimeSpan);
 
-            StationTimeLabel.SetMarkup(Loc.GetString("comp-pda-ui-station-time",
+            StationTimeButton.SetMarkup(Loc.GetString("comp-pda-ui-station-time",
                 ("time", stationTime.ToString("hh\\:mm\\:ss"))));
         }
     }

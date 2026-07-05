@@ -28,30 +28,12 @@
                       HorizontalExpand="True"
                       MinSize="50 50"
                       Margin="8">
-            <ContainerButton Name="PdaOwnerButton" StyleClasses="PdaCopyButton"
-                             ToolTip="{Loc 'comp-pda-ui-copy-tooltip'}">
-                <RichTextLabel Name="PdaOwnerLabel" Access="Public"/>
-            </ContainerButton>
-            <ContainerButton Name="IdInfoButton" StyleClasses="PdaCopyButton"
-                             ToolTip="{Loc 'comp-pda-ui-copy-tooltip'}">
-                <RichTextLabel Name="IdInfoLabel" Access="Public"/>
-            </ContainerButton>
-            <ContainerButton Name="StationNameButton" StyleClasses="PdaCopyButton"
-                             ToolTip="{Loc 'comp-pda-ui-copy-tooltip'}">
-                <RichTextLabel Name="StationNameLabel" Access="Public"/>
-            </ContainerButton>
-            <ContainerButton Name="StationAlertLevelButton" StyleClasses="PdaCopyButton"
-                             ToolTip="{Loc 'comp-pda-ui-copy-tooltip'}">
-                <RichTextLabel Name="StationAlertLevelLabel" Access="Public"/>
-            </ContainerButton>
-            <ContainerButton Name="StationTimeButton" StyleClasses="PdaCopyButton"
-                             ToolTip="{Loc 'comp-pda-ui-copy-tooltip'}">
-                <RichTextLabel Name="StationTimeLabel" Access="Public"/>
-            </ContainerButton>
-            <ContainerButton Name="StationAlertLevelInstructionsButton" StyleClasses="PdaCopyButton"
-                             ToolTip="{Loc 'comp-pda-ui-copy-tooltip'}">
-                <RichTextLabel Name="StationAlertLevelInstructions" Access="Public"/>
-            </ContainerButton>
+            <pda:PdaCopyButton Name="PdaOwnerButton" Access="Public"/>
+            <pda:PdaCopyButton Name="IdInfoButton" Access="Public"/>
+            <pda:PdaCopyButton Name="StationNameButton" Access="Public"/>
+            <pda:PdaCopyButton Name="StationAlertLevelButton" Access="Public"/>
+            <pda:PdaCopyButton Name="StationTimeButton" Access="Public"/>
+            <pda:PdaCopyButton Name="StationAlertLevelInstructionsButton" Access="Public"/>
             <Label Name="CopiedLabel" Visible="False" StyleClasses="PdaCopiedLabel"
                    Text="{Loc 'comp-pda-ui-copied'}" HorizontalAlignment="Right" Margin="0 4 4 0"/>
         </BoxContainer>
